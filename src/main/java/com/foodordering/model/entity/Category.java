@@ -4,25 +4,27 @@ import com.foodordering.model.abstraction.BaseEntity;
 import com.foodordering.model.abstraction.IAuditable;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.time.Instant;
 
-/**
- * Example MongoDB document that extends the base entity.
- */
-@Document(collection = "products")
-public class Product extends BaseEntity implements IAuditable {
+@Document(collection = "categories")
+public class Category extends BaseEntity implements IAuditable {
 
     @Field("name")
     private String name;
 
-    @Field("price")
-    private Double price;
+    @Field("description")
+    private String description;
 
-    public Product() {}
+    @Field("parent_id")
+    private String parentId;
 
-    public Product(String name, Double price) {
+    public Category() {
+    }
+
+    public Category(String name, String description) {
         this.name = name;
-        this.price = price;
+        this.description = description;
     }
 
     public String getName() {
@@ -33,12 +35,20 @@ public class Product extends BaseEntity implements IAuditable {
         this.name = name;
     }
 
-    public Double getPrice() {
-        return price;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     @Override
@@ -53,11 +63,11 @@ public class Product extends BaseEntity implements IAuditable {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "Category{" +
                 "id='" + getId() + '\'' +
                 ", name='" + name + '\'' +
-                ", price=" + price +
-                ", isDeleted=" + isDeleted() +
+                ", description='" + description + '\'' +
+                ", parentId='" + parentId + '\'' +
                 ", createdAt=" + getCreatedAt() +
                 ", modifiedAt=" + getModifiedAt() +
                 '}';
