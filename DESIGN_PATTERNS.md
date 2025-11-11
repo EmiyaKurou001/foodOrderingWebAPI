@@ -104,7 +104,40 @@ public class OrderServiceImpl implements OrderService {
 
 ---
 
-## 4. **Observer Pattern** ✅
+## 4. **Adapter Pattern** ✅
+**Type:** Structural Pattern (GoF)
+
+**Location:** `MomoPayService` (`com.foodordering.integration.momo.*`)
+
+**Purpose:** Converts the interface of a class (MoMo Pay API) into another interface (our payment service) that clients expect.
+
+**Implementation:**
+- `MomoPayService` adapts MoMo Pay's external API to our internal payment interface
+- Provides a unified interface (`createPayment`, `verifyPaymentCallback`) that hides MoMo Pay's complexity
+- Handles MoMo Pay-specific details (signature generation, API format) internally
+- Allows our payment service to work with MoMo Pay without knowing its internal structure
+
+**Why it's Adapter:** The service acts as an adapter between our payment system and MoMo Pay's external API, making incompatible interfaces work together.
+
+```java
+@Service
+public class MomoPayService {
+    // Adapts MoMo Pay API to our payment interface
+    public MomoPaymentResponse createPayment(String orderId, Double amount, String orderInfo) {
+        // Converts our payment request format to MoMo Pay's API format
+        // Handles MoMo-specific signature generation, request formatting
+        // Returns response in our format
+    }
+    
+    public boolean verifyPaymentCallback(Map<String, String> callbackData) {
+        // Adapts MoMo Pay callback format to our verification logic
+    }
+}
+```
+
+---
+
+## 5. **Observer Pattern** ✅
 **Type:** Behavioral Pattern (GoF)
 
 **Location:** `MongoEntityListener`
@@ -337,13 +370,18 @@ public class GlobalExceptionHandler {
    - **Location:** Service layer (`com.foodordering.service.*`)
    - **Matches:** "Provides a simplified interface to a complex subsystem"
 
+4. ✅ **Adapter Pattern** - MomoPayService adapts MoMo Pay API
+   - **Category:** Structural (GoF)
+   - **Location:** `MomoPayService` (`com.foodordering.integration.momo.*`)
+   - **Matches:** "Converts one interface into another expected by the client"
+
 ### 🏗️ Architectural Patterns:
-4. ✅ **MVC (Model-View-Controller) Pattern** - Model-View-Controller architecture
+5. ✅ **MVC (Model-View-Controller) Pattern** - Model-View-Controller architecture
    - **Category:** Architectural Pattern
    - **Location:** Controllers, Entities, DTOs
    - **Matches:** "Separates data (Model), UI (View), and logic (Controller)"
 
-5. ✅ **Layered Architecture (n-tier)** - Organizes code into layers
+6. ✅ **Layered Architecture (n-tier)** - Organizes code into layers
    - **Category:** Architectural Pattern
    - **Location:** Entire codebase structure
    - **Matches:** "Organizes code into layers (Presentation, Business, Data)"
@@ -360,7 +398,7 @@ public class GlobalExceptionHandler {
 
 ## ❌ Patterns NOT Used:
 - **Creational:** Singleton, Factory Method, Abstract Factory, Builder, Prototype
-- **Structural:** Adapter, Bridge, Composite, Decorator, Flyweight, Proxy
+- **Structural:** Bridge, Composite, Decorator, Flyweight, Proxy
 - **Behavioral:** Chain of Responsibility, Command, Interpreter, Iterator, Mediator, Memento, State, Strategy, Visitor
 - **Architectural:** Client-Server, Microservices, Event-Driven, MVVM, Pipe and Filter, SOA, Hexagonal, Event Sourcing/CQRS
 
@@ -398,10 +436,11 @@ This architecture ensures:
 
 **Structural Patterns:**
 3. **Facade Pattern** - Service layer simplifies complex subsystem
+4. **Adapter Pattern** - `MomoPayService` adapts MoMo Pay API to our payment interface
 
 **Architectural Patterns:**
-4. **MVC Pattern** - Model-View-Controller separation
-5. **Layered Architecture** - n-tier architecture with clear layer separation
+5. **MVC Pattern** - Model-View-Controller separation
+6. **Layered Architecture** - n-tier architecture with clear layer separation
 
 ### 📊 Summary Table:
 
@@ -410,6 +449,7 @@ This architecture ensures:
 | Template Method | Behavioral (GoF) | BaseEntity | ✅ Yes |
 | Observer | Behavioral (GoF) | MongoEntityListener | ✅ Yes |
 | Facade | Structural (GoF) | Service Layer | ✅ Yes |
+| Adapter | Structural (GoF) | MomoPayService | ✅ Yes |
 | MVC | Architectural | Controllers/Entities | ✅ Yes |
 | Layered Architecture | Architectural | Entire codebase | ✅ Yes |
 | Repository | Data Access | Repositories | ⚠️ Not in standard list |
