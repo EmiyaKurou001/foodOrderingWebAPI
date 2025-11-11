@@ -82,8 +82,13 @@ public class Account extends BaseEntity {
 - Controllers interact with simple service methods
 - Services coordinate multiple repositories (e.g., `OrderServiceImpl` uses `OrderRepository`, `AccountRepository`, `MenuItemRepository`)
 - Simplifies the interface for clients (controllers)
+- **DashboardService** provides a simplified interface to complex data aggregation logic
 
 **Why it's Facade:** Services provide a unified, simplified interface to a complex subsystem of repositories and business logic.
+
+**Examples:**
+1. **OrderServiceImpl** - Coordinates multiple repositories for order creation
+2. **DashboardServiceImpl** - Provides simple methods for complex data aggregation and statistics
 
 ```java
 @Service
@@ -98,6 +103,15 @@ public class OrderServiceImpl implements OrderService {
     // Facade: simplifies complex operations involving multiple repositories
     public OrderResponse create(OrderRequest request) {
         // Coordinates multiple repositories behind a simple interface
+    }
+}
+
+@Service
+public class DashboardServiceImpl implements DashboardService {
+    // Facade: simplifies complex data aggregation logic
+    public DashboardResponse getMenuItemOrderStatsByMonth(...) {
+        // Hides complex aggregation, filtering, and grouping logic
+        // Provides simple interface for dashboard statistics
     }
 }
 ```
